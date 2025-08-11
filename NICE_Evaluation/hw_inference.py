@@ -334,7 +334,9 @@ wt7 = quantize(model.module.conv7.weight, n_bits)
 # print('done saving')
 # neg, A, W_bits_hw = section.create_A_mat_mod(wt_signed, n_bits, neg_wt_bits, xbar_size, 19.139e3, a.size(0)) #weights, n_bits, xbar_size, base_r   19.139e3
 
-
+# [2025-8-11] fix bug: ./hw_outputs not exist
+if not os.path.exists('./hw_outputs'):
+    os.makedirs('./hw_outputs') 
 
 neg_w1, A1, W1, W_r = section.create_A_mat_mod(wt1, n_bits, neg_wt_bits1, xbar_size, base_r,b_size) #weights, n_bits, xbar_size, base_r   19.139e3
 torch.save([wt1,W1,W_r], './hw_outputs/wts1_q')

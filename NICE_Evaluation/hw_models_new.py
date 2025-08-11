@@ -1,3 +1,4 @@
+import os
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -163,12 +164,22 @@ def quantize(value, n_bits):
 
 def signed_hw_conv_mod(A, B, ideal_current, ADC_prec, neg_W, spike_inp, unfold_size, neg_wt_bits, weight_size, factor):
     # print(B.size(), A.size())
-    sol = torch.solve(B, A)
-    pc_size = sol[0][:, -1, :].size()
+    # sol = torch.solve(B, A)
+    # pc_size = sol[0][:, -1, :].size()
+    
+    # [2025-8-11] fix bug: 
+    sol = torch.linalg.solve(A, B)
+    # [2025-8-11] fix bug: 
+    pc_size = sol[:, -1].size()
+    
     ip_size = spike_inp.size()
     # print('hellow')
     # print(pc_size)
-    p_currents = torch.reshape(sol[0][:, -1, :], shape=(ip_size[0], weight_size[0], -1, pc_size[1]))
+    # p_currents = torch.reshape(sol[0][:, -1, :], shape=(ip_size[0], weight_size[0], -1, pc_size[1]))
+   
+    # [2025-8-11] fix bug:
+    p_currents = torch.reshape(sol[:, -1], shape=(ip_size[0], weight_size[0], -1, pc_size[1]))
+   
     # p_currents = float((2**4)-1) /  7.841899945321117e-05 * p_currents
     # p_currents = float((2 ** 5) - 1) / 0.0001672938655001829 * p_currents
     p_currents = float((2 ** ADC_prec) - 1) / ideal_current * p_currents
@@ -251,6 +262,11 @@ def hw_conv(A, conv_layer, frac_bit, batch_size, b_size, out_prev, xbar_size,
 
         if batch == 0 and ba == 0:
             # print(f'saving {i} size {sub_after_shift.size()}')
+
+            # [2025-8-11] fix bug: ./hw_outs_new not exist
+            if not os.path.exists('./hw_outs_new'):
+                os.makedirs('./hw_outs_new')
+
             torch.save(sub_after_shift, './hw_outs_new/conv' + str(layer) + '_output_hw' + str(t))
             torch.save(conv_layer(out_prev[ba * b_size:ba * b_size + b_size, :, :, :]),
                        './hw_outs_new/conv' + str(layer) + '_out_sw' + str(t))

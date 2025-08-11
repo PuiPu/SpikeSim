@@ -1,0 +1,125 @@
+name: no-dependency-env
+channels:
+- defaults
+- conda-forge
+dependencies:
+- _libgcc_mutex
+- attrs
+- beautifulsoup4
+- blas
+- bottleneck
+- brotlipy
+- ca-certificates
+- certifi
+- cffi
+- chardet
+- cryptography
+- cudatoolkit
+- cycler
+- cymem
+- cython-blis
+- dataclasses
+- dbus
+- expat
+- fastai
+- fastprogress
+- fontconfig
+- freetype
+- glib
+- gst-plugins-base
+- gstreamer
+- icu
+- idna
+- importlib-metadata
+- importlib_metadata
+- intel-openmp
+- jpeg
+- jsonschema
+- kiwisolver
+- ld_impl_linux-64
+- libedit
+- libffi
+- libgcc-ng
+- libgfortran-ng
+- libpng
+- libprotobuf
+- libstdcxx-ng
+- libtiff
+- libuuid
+- libxcb
+- libxml2
+- lz4-c
+- mkl
+- mkl-service
+- mkl_fft
+- mkl_random
+- murmurhash
+- ncurses
+- ninja
+- numexpr
+- numpy
+- numpy-base
+- olefile
+- openssl
+- packaging
+- pandas
+- pcre
+- pillow
+- pip
+- plac
+- preshed
+- protobuf
+- pycparser
+- pyopenssl
+- pyparsing
+- pyqt
+- pyrsistent
+- pysocks
+- python
+- python-dateutil
+- python_abi
+- pytorch
+- pytz
+- pyyaml
+- qt
+- readline
+- requests
+- setuptools
+- sip
+- six
+- soupsieve
+- spacy
+- sqlite
+- srsly
+- tensorboardx
+- thinc
+- tk
+- torchvision
+- tornado
+- tqdm
+- urllib3
+- wasabi
+- wheel
+- xz
+- yaml
+- zipp
+- zlib
+- zstd
+- pip:
+  - nvidia-ml-py3 # 從 conda 改到 pip
+  - eagerpy
+  - einops
+  - fonttools
+  - foolbox
+  - future
+  - gitdb
+  - gitpython
+  - joblib
+  - matplotlib
+  - scikit-learn
+  - scipy
+  - smmap
+  - spikingjelly
+  - threadpoolctl
+  - torchattacks
+  - typing-extensions
