@@ -302,7 +302,12 @@ model.eval()
 n_bits= args.quant
 b_size = args.b_size
 xbar_size = args.xbar_size
-base_r = 19.139e3  #120e3 # 200e3 #
+
+# [2025.8.11] need to test here
+# base_r = 19.139e3  # RRAM_LOW
+# base_r = 200e3 # RRAM_HIGH
+base_r = 120e3 # SRAM
+
 neg_wt_bits1 = 3
 neg_wt_bits2 = 3
 # print(f'mean weight {model.module.conv1.weight.data.abs().mean()}')
@@ -467,18 +472,22 @@ bin_op.binarization()
 # out = model(inp, 0, A_list, neg_W_list, xbar_size, n_bits, neg_bits, b_size)
 # prec1, prec5 = accuracy(out, labels, topk=(1, 5))
 with torch.no_grad():
-     for j, data in enumerate(testloader, 0):
-         print(f' batch {j}')
-         images, labels = data
-         images = images.cuda()
-         labels = labels.cuda()
-         start = time.time()
-         out = model(images, j, A_list, neg_W_list, xbar_size, n_bits, neg_bits, b_size, ADC_precision)
+    for j, data in enumerate(testloader, 0):
+        # [2025.8.11] limit batch size 
+        if j >= 3:
+            break
+        
+        print(f' batch {j}')
+        images, labels = data
+        images = images.cuda()
+        labels = labels.cuda()
+        start = time.time()
+        out = model(images, j, A_list, neg_W_list, xbar_size, n_bits, neg_bits, b_size, ADC_precision)
 
-         prec1, prec5 = accuracy(out, labels, topk=(1, 5))
-         acc_top1.append(float(prec1))
-         print(f'time for batch {j} = {time.time() - start}; Accuracy = {np.mean(acc_top1)}')
-         # acc_top5.append(float(prec5))
+        prec1, prec5 = accuracy(out, labels, topk=(1, 5))
+        acc_top1.append(float(prec1))
+        print(f'time for batch {j} = {time.time() - start}; Accuracy = {np.mean(acc_top1)}')
+        # acc_top5.append(float(prec5))
 
 # bin_op.restore()
 test_accuracy = np.mean(acc_top1)

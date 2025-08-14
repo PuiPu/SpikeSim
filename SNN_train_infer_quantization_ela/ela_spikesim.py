@@ -208,7 +208,7 @@ time_steps = 5
 clk_freq = 250  # Freq. in MHz
 PE_cycle = 26 * (1000 / clk_freq)
 
-n_tiles = pe_tile_count(in_ch_list, out_ch_list, out_dim_list, kernel_size, xbar_size, pe_per_tile)
+n_tiles = pe_tile_count(in_ch_list, out_ch_list, out_dim_list, kernel_size, xbar_size, pe_per_tile) 
 
 compute_area(in_ch_list, in_dim_list, out_ch_list, out_dim_list, xbar_size, kernel_size, pe_per_tile, n_tiles, 'rram')
 compute_energy(in_ch_list, in_dim_list, out_ch_list, out_dim_list, xbar_size, kernel_size, n_tiles, 'rram', time_steps)
